@@ -11,6 +11,9 @@ class Bus extends Model
     protected $fillable = [
         'number',
         'road',
-        'Dynamic',
+        'PlateNumb',
+        'GPS_Time',
+        'X',
+        'Y',
     ];
 }

@@ -18,7 +18,10 @@ class CreateBusesTable extends Migration
             $table->timestamps();
             $table->string('number');
             $table->string('road');
-            $table->string('Dynamic');
+            $table->string('PlateNumb')->default('沒有車喔!');
+            $table->string('GPS_Time')->default('沒有車喔!');
+            $table->string('X')->default('沒有車喔!');
+            $table->string('Y')->default('沒有車喔!');
         });
     }
 

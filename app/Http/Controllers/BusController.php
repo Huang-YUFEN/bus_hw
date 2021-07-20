@@ -20,11 +20,6 @@ class BusController extends Controller
         return view('buses.index', compact('buses'));
         
     }
-
-    public function see(){
-        $bus= Http::get("http://e-traffic.taichung.gov.tw/DataAPI/api/BusDynamicAPI/300?direction=0");
-        return view ('buses',);
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -53,13 +48,18 @@ class BusController extends Controller
         $id2=$request->road;//公車路程(去程:0 回程:1)
         $input=Http::get("http://e-traffic.taichung.gov.tw/DataAPI/api/BusDynamicAPI/{$id}?direction={$id2}");
         $inner=$input['Dynamic'];
-
         $myString = implode(',', array_column($inner, 'PlateNumb'));
+        $myString1 = implode(',', array_column($inner, 'GPS_Time'));
+        $myString2 = implode(',', array_column($inner, 'X'));
+        $myString3 = implode(',', array_column($inner, 'Y'));
         // * 更新對應欄位
         $bus = new Bus([ 
             'number' => $request->get('number'), 
             'road' => $request->get('road'), 
-            'Dynamic'=>$myString,
+            'PlateNumb'=>$myString,
+            'GPS_Time'=>$myString1,
+            'X'=>$myString2,
+            'Y'=>$myString3,
 
         ]); 
         
@@ -108,10 +108,18 @@ class BusController extends Controller
         $bn= $request->number;//公車號碼
         $br=$request->road;//公車路程(去程:0 回程:1)
         $input=Http::get("http://e-traffic.taichung.gov.tw/DataAPI/api/BusDynamicAPI/{$bn}?direction={$br}");
+        $inner=$input['Dynamic'];
+        $myString = implode(',', array_column($inner, 'PlateNumb'));
+        $myString1 = implode(',', array_column($inner, 'GPS_Time'));
+        $myString2 = implode(',', array_column($inner, 'X'));
+        $myString3 = implode(',', array_column($inner, 'Y'));
         $bus = Bus::find($id);
         $bus->number = $request->get('number');
         $bus->road = $request->get('road');
-        $bus->Dynamic=$input;
+        $bus->PlateNumb=$myString;
+        $bus->GPS_Time=$myString1;
+        $bus->X=$myString2;
+        $bus->Y=$myString3;
         $bus->save(); 
         return redirect('/buses')->with('success', 'Bus updated!');
     }

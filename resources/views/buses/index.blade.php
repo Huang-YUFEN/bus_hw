@@ -35,7 +35,11 @@
         <tr>
           <td><h5>公車車號</h5></td>
           <td><h5>路程(去程:0 回程:1)</h5></td>
-          <td><h5>資料</h5></td>
+          <td><h5>車牌</h5></td>
+          <td><h5>時間</h5></td>
+          <td><h5>X</h5></td>
+          <td><h5>Y</h5></td>
+
           <td colspan = 3><h5>動作<a href="{{ url('buses/create') }}" class="abc" style="margin:0 0 0 30%">查詢</a></h5></td>
         </tr>
     </thead>
@@ -44,7 +48,10 @@
         <tr>
             <td>{{$bus->number}}</td>
             <td>{{$bus->road}}</td>
-            <td>{{$bus->Dynamic}}</td>
+            <td>{{$bus->PlateNumb}}</td>
+            <td>{{$bus->GPS_Time}}</td>
+            <td>{{$bus->X}}</td>
+            <td>{{$bus->Y}}</td>
             <td>
                 <a href="{{ route('buses.edit',$bus->id)}}" class="btn btn-primary">更新</a>
             </td>
