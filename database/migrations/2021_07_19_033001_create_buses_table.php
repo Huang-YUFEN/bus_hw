@@ -11,6 +11,13 @@ class CreateBusesTable extends Migration
      *
      * @return void
      */
+
+     /* number:公車車號 
+        road:路程(0-去程，1-回程)
+        PlateNumb:車牌號
+        GPS_Time:時間
+        X,Y:座標
+     */
     public function up()
     {
         Schema::create('buses', function (Blueprint $table) {

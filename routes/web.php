@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get("bus",[BusController::class,'see']);
 Route::resource('buses', 'App\Http\Controllers\BusController');
 
 Auth::routes();

@@ -47,11 +47,27 @@ class BusController extends Controller
         $id= $request->number;//公車號碼
         $id2=$request->road;//公車路程(去程:0 回程:1)
         $input=Http::get("http://e-traffic.taichung.gov.tw/DataAPI/api/BusDynamicAPI/{$id}?direction={$id2}");
-        $inner=$input['Dynamic'];
-        $myString = implode(',', array_column($inner, 'PlateNumb'));
-        $myString1 = implode(',', array_column($inner, 'GPS_Time'));
-        $myString2 = implode(',', array_column($inner, 'X'));
-        $myString3 = implode(',', array_column($inner, 'Y'));
+        //用Http::get方式去呼叫API得到資料存入變數input
+
+        /*  $myString 代表車號 ;
+            $myString1 代表時間;
+            $myString2 代表X座標;
+            $myString3 代表Y座標; */
+
+        if($input=="null"){//API回傳資料為null
+            $myString = "null";
+            $myString1 = "null";
+            $myString2 = "null";
+            $myString3 = "null";
+        }else{
+            $inner=$input['Dynamic'];//將API回傳資料中的Dynamic陣列資料存入inner變數
+            $myString = implode(',', array_column($inner, 'PlateNumb'));//將inner陣列中多筆PlateNumb資料用逗號隔開，並將資料存入mySting變數
+            $myString1 = implode(',', array_column($inner, 'GPS_Time'));
+            $myString2 = implode(',', array_column($inner, 'X'));
+            $myString3 = implode(',', array_column($inner, 'Y'));
+            //方法參考網址:https://stackoverflow.com/questions/36134258/laravel-array-to-string-conversion/36134350
+        }
+
         // * 更新對應欄位
         $bus = new Bus([ 
             'number' => $request->get('number'), 
@@ -64,7 +80,7 @@ class BusController extends Controller
         ]); 
         
         $bus->save(); 
-        return redirect('/buses')->with('success', '景點OK！');
+        return redirect('/buses')->with('success', '資料已完成!');
     }
 
     /**
@@ -108,12 +124,21 @@ class BusController extends Controller
         $bn= $request->number;//公車號碼
         $br=$request->road;//公車路程(去程:0 回程:1)
         $input=Http::get("http://e-traffic.taichung.gov.tw/DataAPI/api/BusDynamicAPI/{$bn}?direction={$br}");
-        $inner=$input['Dynamic'];
-        $myString = implode(',', array_column($inner, 'PlateNumb'));
-        $myString1 = implode(',', array_column($inner, 'GPS_Time'));
-        $myString2 = implode(',', array_column($inner, 'X'));
-        $myString3 = implode(',', array_column($inner, 'Y'));
-        $bus = Bus::find($id);
+        if($input=="null"){//API回傳資料為null
+            $myString = "null";
+            $myString1 = "null";
+            $myString2 = "null";
+            $myString3 = "null";
+        }else{
+            $inner=$input['Dynamic'];//將API回傳資料中的Dynamic陣列資料存入inner變數
+            $myString = implode(',', array_column($inner, 'PlateNumb'));//將inner陣列中多筆PlateNumb資料用逗號隔開，並將資料存入mySting變數
+            $myString1 = implode(',', array_column($inner, 'GPS_Time'));
+            $myString2 = implode(',', array_column($inner, 'X'));
+            $myString3 = implode(',', array_column($inner, 'Y'));
+            //方法參考網址:https://stackoverflow.com/questions/36134258/laravel-array-to-string-conversion/36134350
+        }
+        
+        $bus = Bus::find($id);//找到需要更新的資料id
         $bus->number = $request->get('number');
         $bus->road = $request->get('road');
         $bus->PlateNumb=$myString;

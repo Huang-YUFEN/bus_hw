@@ -40,7 +40,8 @@
           <td><h5>X</h5></td>
           <td><h5>Y</h5></td>
 
-          <td colspan = 3><h5>動作<a href="{{ url('buses/create') }}" class="abc" style="margin:0 0 0 30%">查詢</a></h5></td>
+          <td><h5>動作</h5></td>
+          <td><a href="{{ url('buses/create') }}" class="btn btn-primary" >查詢</a></td>
         </tr>
     </thead>
     <tbody>
